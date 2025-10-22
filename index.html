@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Henry Lunz — Portfólio Cyberpunk</title>
+
+<!-- Fonte estilosa -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ================= VARS ================= */
+  :root{
+    --bg-1: #060610;
+    --bg-2: #0b0520;
+    --neon-1: #7c3aed; /* roxo */
+    --neon-2: #06b6d4; /* ciano */
+    --neon-3: #ff2d95; /* magenta */
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.06);
+    --text: #e6eef8;
+    --muted: rgba(230,238,248,0.6);
+    --accent: linear-gradient(90deg,var(--neon-1),var(--neon-2),var(--neon-3));
+    --card-radius: 14px;
+    --transition: 300ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  /* ================ RESET BASICO ================ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.06), transparent 6%),
+                radial-gradient(900px 500px at 90% 80%, rgba(6,182,212,0.04), transparent 6%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x: hidden;
+    min-height:100vh;
+  }
+
+  /* ================ BACKDROP HOLOGRAPHIC ================ */
+  .holo {
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    mix-blend-mode:screen;
+    opacity:0.75;
+    background:
+      repeating-linear-gradient(transparent 0 1px, rgba(255,255,255,0.02) 1px 2px),
+      radial-gradient(600px 200px at 15% 20%, rgba(124,58,237,0.08), transparent 8%),
+      radial-gradient(700px 220px at 85% 80%, rgba(6,182,212,0.06), transparent 8%);
+    animation: holoShift 20s linear infinite;
+    filter: blur(18px) saturate(1.2);
+  }
+  @keyframes holoShift { 
+    0%{transform:translateY(0) scale(1)} 
+    50%{transform:translateY(-30px) scale(1.03)} 
+    100%{transform:translateY(0) scale(1)} 
+  }
+
+  /* ================ HEADER / NAV ================ */
+  header{
+    position:relative;
+    z-index:3;
+    padding:2.4rem 1.25rem;
+    display:flex;
+    align-items:center;
+    gap:1.25rem;
+    justify-content:space-between;
+    max-width:1200px;
+    margin:0 auto;
+  }
+
+  .brand {
+    display:flex;
+    gap:0.9rem;
+    align-items:center;
+  }
+
+  .logo {
+    width:56px;height:56px;border-radius:12px;
+    background: conic-gradient(from 180deg at 50% 50%, var(--neon-1), var(--neon-2), var(--neon-3));
+    box-shadow: 0 6px 28px rgba(124,58,237,0.12), 0 2px 6px rgba(6,182,212,0.06);
+    display:grid;place-items:center;
+    font-family: "Orbitron", monospace;
+    font-weight:700;
+    color:#021;
+    transform:skewY(-6deg);
+  }
+
+  .brand h3{font-family: "Orbitron", monospace; letter-spacing:0.6px; color:var(--text); font-size:1.05rem}
+  .brand p{font-size:0.8rem;color:var(--muted); margin-top:2px}
+
+  nav {
+    display:flex;gap:.5rem;align-items:center;
+    background:transparent;
+  }
+
+  .nav-link{
+    font-weight:600;
+    color:var(--muted);
+    padding:.55rem .8rem;
+    border-radius:10px;
+    transition: var(--transition);
+    position:relative;
+    text-decoration:none;
+    font-size:0.95rem;
+  }
+  .nav-link:hover{ color:var(--text); transform:translateY(-3px) }
+  .nav-link.active{
+    color:var(--text);
+    box-shadow: 0 6px 18px rgba(124,58,237,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(124,58,237,0.12);
+  }
+
+  /* small toggle em estilo neon */
+  .controls { display:flex; gap:.6rem; align-items:center }
+  .neon-toggle {
+    width:44px;height:28px;border-radius:999px;padding:4px;background:rgba(255,255,255,0.03);display:flex;align-items:center;cursor:pointer;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .neon-toggle .dot{width:18px;height:18px;border-radius:50%;background:linear-gradient(90deg,var(--neon-1),var(--neon-2));box-shadow:0 6px 18px rgba(124,58,237,0.18);transform:translateX(0);transition:var(--transition)}
+  .neon-toggle.off .dot{transform:translateX(16px); filter:grayscale(1) brightness(.7); box-shadow:none}
+
+  /* ================ HERO ================ */
+  .hero {
+    max-width:1200px;margin:1rem auto 2rem;padding:1rem;
+    display:grid;grid-template-columns: 1fr 420px; gap:1.5rem;align-items:center;z-index:2;position:relative;
+  }
+
+  /* cartão principal */
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius: var(--card-radius);
+    padding:2rem;
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    position:relative;
+    overflow:visible;
+  }
+
+  .hero h1{
+    font-family: "Orbitron", monospace;
+    font-weight:700;
+    font-size:2.4rem;
+    line-height:1.02;
+    background: var(--accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing:1px;
+  }
+
+  .glow-line{
+    height:6px;border-radius:999px;margin:1rem 0 1.25rem;
+    background: linear-gradient(90deg, rgba(124,58,237,0.95), rgba(6,182,212,0.95), rgba(255,45,149,0.95));
+    filter:blur(8px); opacity:0.9;
+  }
+
+  .subtitle { color:var(--muted); margin-bottom:1rem; font-size:0.98rem }
+
+  .hero p { color:var(--muted); line-height:1.5; margin-bottom:1rem }
+
+  /* efeito glitch no nome */
+  .glitch {
+    position:relative; display:inline-block;
+  }
+  .glitch::before, .glitch::after{
+    content:attr(data-text);
+    position:absolute; left:0; top:0; width:100%;
+    clip-path: inset(0 0 0 0);
+    opacity:0.85;
+  }
+  .glitch::before { transform: translate(2px,-2px); color:var(--neon-2); mix-blend-mode: screen; filter:blur(.6px) }
+  .glitch::after { transform: translate(-2px,2px); color:var(--neon-3); mix-blend-mode: screen; filter:blur(.6px) }
+  @keyframes glitchAnim {
+    0%{transform:translateX(0)}
+    20%{transform:translateX(-2px)}
+    40%{transform:translateX(2px)}
+    60%{transform:translateX(-1px)}
+    100%{transform:translateX(0)}
+  }
+  .glitch:hover::before, .glitch:hover::after{ animation: glitchAnim .38s linear 1 }
+
+  /* CTA e badges */
+  .badges { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem }
+  .badge {
+    padding:.45rem .65rem;border-radius:999px;font-weight:600;font-size:.85rem;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03); color:var(--muted)
+  }
+
+  .cta-row { margin-top:1.25rem; display:flex; gap:.9rem; align-items:center }
+  .btn {
+    padding:.7rem 1rem;border-radius:12px;font-weight:700;border:0;cursor:pointer;
+    background:linear-gradient(90deg,var(--neon-1),var(--neon-2));
+    color:#051025; box-shadow: 0 10px 30px rgba(6,182,212,0.08);
+    transition: var(--transition);
+  }
+  .btn.ghost { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.04) }
+
+  /* ================ SIDEBAR CARTAO PERFIL ================ */
+  .profile-card {
+    display:flex;flex-direction:column;gap:1rem;align-items:center;padding:1.35rem;
+    border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  }
+
+  .avatar {
+    width:140px;height:140px;border-radius:12px;overflow:hidden;
+    border:3px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 28px rgba(124,58,237,0.09);
+    display:grid;place-items:center;font-family: "Orbitron"; font-weight:700; font-size:1.6rem;
+    background: linear-gradient(180deg,#04102a, rgba(124,58,237,0.08));
+  }
+  .role{font-weight:600;color:var(--muted);font-size:0.95rem}
+  .socials{display:flex;gap:.6rem}
+
+  .dot {
+    width:10px;height:10px;border-radius:50%; box-shadow: 0 6px 14px rgba(124,58,237,0.08);
+    background: linear-gradient(90deg,var(--neon-2),var(--neon-3));
+  }
+
+  /* ================ SECTIONS (HABILIDADES / PROJETOS / JOGOS / CONTATO) ================ */
+  .sections {
+    max-width:1200px;margin:0 auto;padding:0 1.25rem 4rem;
+    display:grid;gap:1.25rem;
+  }
+
+  .grid {
+    display:grid;grid-template-columns: repeat(auto-fit,minmax(240px,1fr));gap:1rem;
+  }
+
+  .skill-card, .project-card {
+    border-radius:12px;padding:1rem;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.55);
+    transition:var(--transition);
+  }
+  .skill-card:hover, .project-card:hover { transform: translateY(-8px) }
+
+  .skill-title { font-weight:700;color:var(--neon-1); margin-bottom:.5rem; font-size:0.98rem }
+  .skill-list { color:var(--muted); font-size:0.95rem; line-height:1.5 }
+
+  .project-title { font-family: "Orbitron"; color:var(--neon-2); font-weight:700; margin-bottom:.6rem }
+
+  /* small footer */
+  footer{ max-width:1200px;margin:2rem auto 4rem;padding:1rem; color:var(--muted); text-align:center; font-size:0.95rem }
+
+  /* ================ CUSTOM CURSOR ================ */
+  .cursor {
+    position:fixed; width:18px;height:18px;border-radius:50%; pointer-events:none; z-index:9999;
+    transform:translate(-50%,-50%); mix-blend-mode: difference; transition: transform 120ms linear;
+    background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.06) 20%, transparent 60%);
+    box-shadow: 0 6px 20px rgba(124,58,237,0.25), 0 0 8px rgba(6,182,212,0.12);
+  }
+
+  .cursor.big{ width:36px;height:36px; }
+
+  /* ================ RESPONSIVE ================ */
+  @media (max-width: 980px){
+    .hero { grid-template-columns: 1fr; gap:1rem }
+    header{padding:1rem 1rem}
+    .logo{width:48px;height:48px}
+  }
+  @media (max-width: 520px){
+    .nav-link{padding:.5rem .6rem;font-size:.9rem}
+    .hero h1{font-size:1.6rem}
+    .avatar{width:110px;height:110px}
+  }
+</style>
+</head>
+
+<body>
+  <div class="holo" aria-hidden="true"></div>
+
+  <header>
+    <div class="brand">
+      <div class="logo">H</div>
+      <div>
+        <h3>Henry Lunz</h3>
+        <p>Desenvolvedor · Criador</p>
+      </div>
+    </div>
+
+    <nav role="navigation" aria-label="Menu principal">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#habilidades">Habilidades</a>
+      <a class="nav-link" href="#projetos">Projetos</a>
+      <a class="nav-link" href="#jogos">Jogos</a>
+      <a class="nav-link" href="#contato">Contato</a>
+      <div class="controls" style="margin-left:10px;">
+        <div class="neon-toggle" id="neonToggle" title="Toggle neon">
+          <div class="dot"></div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <main class="hero" id="home" role="main">
+    <section class="card">
+      <div style="display:flex;flex-direction:column">
+        <h1>
+          <span class="glitch" data-text="Henry Lunz">Henry Lunz</span>
+        </h1>
+        <div class="glow-line" aria-hidden="true"></div>
+        <div class="subtitle">Portfólio Pessoal — Futurista · Neon · Cyberpunk</div>
+        <p>Sou desenvolvedor fullstack, apaixonado por estética sombria com luzes de neon.</p>
+
+        <div class="badges" aria-hidden="true">
+          <span class="badge">Flask</span>
+          <span class="badge">Node.js</span>
+          <span class="badge">C# / WPF</span>
+          <span class="badge">Python</span>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn" id="downloadCv">Baixar CV</button>
+          <button class="btn ghost" id="verProjetos">Ver Projetos</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="profile-card" aria-labelledby="perfilTitle">
+      <div class="avatar" role="img" aria-label="Avatar de Henry">HL</div>
+      <div style="text-align:center">
+        <div id="perfilTitle" style="font-weight:800">Henry Lunz</div>
+        <div class="role">Dev · Criador · Mangaka</div>
+      </div>
+
+      <div style="width:100%;display:flex;flex-direction:column;gap:.6rem;margin-top:.6rem">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <small style="color:var(--muted)">Local</small>
+          <strong style="color:var(--text)">Brasil</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <small style="color:var(--muted)">Email</small>
+          <a href="mailto:henry.feletti.dev@gmail.com" style="color:var(--muted)">henry.feletti.dev@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="socials" aria-hidden="true">
+        <a class="badge" href="https://github.com/Henry-Feletti" title="GitHub">GitHub</a>
+        <a class="badge" href="https://x.com/oLunzin_01" title="Twitter">Twitter</a>
+      </div>
+    </aside>
+  </main>
+
+  <!-- SECTIONS -->
+  <div class="sections">
+    <section id="habilidades" class="card" tabindex="0" aria-labelledby="h1">
+      <h2 id="h1">Habilidades</h2>
+      <p style="color:var(--muted);margin-bottom:1rem">Ferramentas & linguagens que uso diariamente.</p>
+      <div class="grid">
+        <div class="skill-card">
+          <div class="skill-title">Back-end</div>
+          <div class="skill-list">Node.js · Express · Python · Flask · C# · ASP.NET</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-title">Front-end</div>
+          <div class="skill-list">HTML5 · CSS3 · animações JS</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-title">DB (DataBase)</div>
+          <div class="skill-list">PostgreSQL · MongoDB</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projetos" class="card" tabindex="0">
+      <h2>Projetos</h2>
+      <p style="color:var(--muted);margin-bottom:1rem">Alguns trabalhos recentes e experimentos.</p>
+      <div class="grid">
+        <div class="project-card">
+          <div class="project-title">Henry'sC.A.S.S.I.N.O (demo)</div>
+          <div style="color:var(--muted)">Um aplicativo que simula um cassino, porém SEM uso de dinheiro real.</div>
+        </div>
+        <div class="project-card">
+          <div class="project-title">GulitoPET (demo)</div>
+          <div style="color:var(--muted)">Assistente virtual estilo pet com animações e integração WPF (protótipo).</div>
+        </div>
+        <div class="project-card">
+          <div class="project-title">Portfolio Engine</div>
+          <div style="color:var(--muted)">Template responsivo com tema cyberpunk (este mesmo projeto).</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="jogos" class="card" tabindex="0">
+      <h2>Jogos Favoritos</h2>
+      <div class="grid">
+        <div class="skill-card">
+          <div class="skill-title">FPS / Ação</div>
+          <div class="skill-list">Valorant · CS2 · Overwatch 2</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-title">RP / Aventura</div>
+          <div class="skill-list">MTA SA · PEAK · REPO</div>
+        </div>
+      </div>
+    </section>
+
+        <section id="contato" class="card" tabindex="0" aria-labelledby="contactTitle">
+      <h2 id="contactTitle">Aviso / Duvida?</h2>
+      <p style="color:var(--muted);margin-bottom:1rem">Pagina pode mudar durante o tempo... quando quiser ajuda é só me chamar no pv (Ou DM kkk)</p>
+
+        <div id="formMsg" style="color:var(--muted);font-size:.95rem;margin-top:.4rem"></div>
+      </form>
+    </section>
+  </div>
+
+
+  <footer>© <span id="ano"></span> Henry Lunz — feito com neon, Agua e Fontade de jogar alguma coisa...</footer>
+
+  <!-- custom cursor element -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<script>
+/* ================== JS: INTERAÇÕES ================== */
+
+// ano no footer
+document.getElementById('ano').innerText = new Date().getFullYear();
+
+/* NAV SPA-like + active link */
+const links = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('main, .sections section, #home');
+
+function setActive(hash) {
+  links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + hash));
+  // scroll to section if exists
+  const el = document.getElementById(hash);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// on load, if there's a hash
+if (location.hash) {
+  setActive(location.hash.substring(1));
+}
+
+// click handlers
+links.forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const id = a.getAttribute('href').substring(1);
+    history.pushState(null, '', '#'+id);
+    setActive(id);
+  });
+});
+
+/* HERO BUTTONS */
+document.getElementById('verProjetos').addEventListener('click', ()=> {
+  history.pushState(null,'','#projetos'); setActive('projetos');
+});
+document.getElementById('downloadCv').addEventListener('click', ()=> {
+  // exemplo: cria um arquivo .txt temporário com bio (pode apontar para um PDF real)
+  const cv = "Henry Lunz - Desenvolvedor / Criador\nPortfólio Cyberpunk\nContato: henry.feletti.dev@gmail.com";
+  const blob = new Blob([cv], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'CV-Henry-Lunz.txt'; a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* CURSOR custom */
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', (e)=>{
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.addEventListener('mousedown', ()=> cursor.classList.add('big'));
+document.addEventListener('mouseup', ()=> cursor.classList.remove('big'));
+// hover grow on buttons / links
+document.querySelectorAll('a, button, .btn, .nav-link, input, textarea').forEach(el=>{
+  el.addEventListener('mouseenter', ()=> cursor.classList.add('big'));
+  el.addEventListener('mouseleave', ()=> cursor.classList.remove('big'));
+});
+
+/* NEON TOGGLE */
+const neonToggle = document.getElementById('neonToggle');
+neonToggle.addEventListener('click', ()=> {
+  neonToggle.classList.toggle('off');
+  document.body.classList.toggle('neon-off');
+  // subtle: desliga sombras e animações se neon-off
+  if (document.body.classList.contains('neon-off')) {
+    document.querySelector('.holo').style.opacity = 0.12;
+  } else {
+    document.querySelector('.holo').style.opacity = 0.75;
+  }
+});
+
+/* small animation: reveal sections on scroll */
+const revealElems = document.querySelectorAll('.card, .sections section, .profile-card');
+const onScroll = ()=> {
+  const top = window.innerHeight;
+  revealElems.forEach(el=>{
+    const rect = el.getBoundingClientRect();
+    if (rect.top < top - 60) el.classList.add('active-section');
+  });
+};
+window.addEventListener('load', onScroll);
+window.addEventListener('scroll', onScroll);
+
+/* tiny accessibility: keyboard nav for links */
+document.addEventListener('keydown', (e)=>{
+  if ((e.key === 'Tab')) {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  }
+});
+</script>
+
+</body>
+</html>
